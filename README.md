@@ -5,7 +5,16 @@ Welcome to AI-OS! This repository contains everything you need to:
 - 🤖 **Create** custom AI agents using the Agent Framework
 - 🚀 **Deploy** your agents to the AI-OS ecosystem
 
-## 🚀 Quick Start
+## 🎯 Primeira Vez? Comece Aqui!
+
+**[📖 QUICK START - Configure em 5 minutos!](QUICK_START.md)** 
+
+Inclui:
+- Links para baixar Windsurf e Claude Desktop
+- Como configurar Claude Code no Windsurf
+- Setup automático usando o próprio Claude Code
+
+## 🚀 Quick Start (usuários experientes)
 
 ### Prerequisites
 - Claude Code or Windsurf installed
