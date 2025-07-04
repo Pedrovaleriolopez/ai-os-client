@@ -6,13 +6,26 @@
 
 ### 1. Clone o repositório
 ```bash
-git clone https://github.com/allfluencee/ai-os.git
-cd ai-os
+git clone https://github.com/allfluencee/ai-os-client.git
+cd ai-os-client
 ```
 
-### 2. Execute o script de setup
+### 2. Registre-se ou faça login
 
-**Windows (PowerShell como Admin):**
+**Windows (PowerShell):**
+```powershell
+.\scripts\register-user.ps1
+```
+
+**Mac/Linux:**
+```bash
+chmod +x scripts/register-user.sh
+./scripts/register-user.sh
+```
+
+### 3. Execute o script de setup
+
+**Windows (PowerShell):**
 ```powershell
 .\scripts\setup-client.ps1
 ```
@@ -22,12 +35,6 @@ cd ai-os
 chmod +x scripts/setup-client.sh
 ./scripts/setup-client.sh
 ```
-
-### 3. Forneça suas informações quando solicitado:
-- Email: seu-email@allfluence.ai
-- User ID: (será sugerido automaticamente)
-- Server IP: 5.161.112.59 (padrão)
-- Tenant ID: default (padrão)
 
 ### 4. Abra no Claude Code/Windsurf
 ```bash
@@ -138,14 +145,15 @@ const docs = await graph.query(
 3. Verifique os logs: `ssh root@5.161.112.59 "docker logs ai-os-orchestrator"`
 
 ### Erro: "Authentication failed"
-1. Verifique suas credenciais no arquivo `.env.local`
-2. Solicite um novo token de acesso
+1. Execute o script de registro novamente: `./scripts/register-user.ps1` ou `./scripts/register-user.sh`
+2. Verifique suas credenciais no arquivo `.ai-os-credentials.json`
+3. Se o problema persistir, solicite suporte
 
 ## 📚 Recursos Adicionais
 
 - [Documentação completa](./docs/CLIENT_SETUP_GUIDE.md)
-- [Arquitetura do sistema](./docs/ARCHITECTURE.md)
-- [Guia de desenvolvimento](./docs/DEVELOPER.md)
+- [Guia de desenvolvimento de agentes](./docs/AGENT_DEVELOPMENT_GUIDE.md)
+- [Exemplos de código](./docs/examples/)
 
 ## 💬 Suporte
 
