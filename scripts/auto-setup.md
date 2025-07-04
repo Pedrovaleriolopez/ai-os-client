@@ -1,38 +1,50 @@
-# 🤖 Comandos para Claude Code Executar
+# 🤖 Comandos para Cascade Executar no Windsurf
 
-## Para Windows (PowerShell)
+## Para Windows com WSL (Recomendado)
 
-```powershell
-# 1. Verificar se Git está instalado
-if (!(Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ Git não está instalado. Por favor, instale em: https://git-scm.com/download/win" -ForegroundColor Red
-    exit 1
-}
+**IMPORTANTE**: No Windsurf, use o terminal WSL em vez do PowerShell!
 
-# 2. Clonar o repositório (se ainda não clonado)
-if (!(Test-Path ".git")) {
-    Write-Host "📥 Clonando repositório AI-OS Client..." -ForegroundColor Yellow
+### Como abrir terminal WSL no Windsurf:
+1. Pressione `Ctrl+` ` (backtick) para abrir o terminal
+2. Clique no dropdown `+` → Selecione "WSL" ou "Ubuntu"
+3. Agora você está no ambiente Linux
+
+### Script para executar no terminal WSL:
+
+```bash
+#!/bin/bash
+
+# 1. Navegar para o diretório do projeto Windows
+cd /mnt/c/projetos/ai-os-client
+
+# 2. Verificar se Git está instalado
+if ! command -v git &> /dev/null; then
+    echo "📦 Instalando Git..."
+    sudo apt update
+    sudo apt install git -y
+fi
+
+# 3. Clonar o repositório (se ainda não clonado)
+if [ ! -d ".git" ]; then
+    echo "📥 Clonando repositório AI-OS Client..."
     git clone https://github.com/allfluencee/ai-os-client.git .
-}
+fi
 
-# 3. Verificar política de execução
-$policy = Get-ExecutionPolicy -Scope CurrentUser
-if ($policy -eq "Restricted") {
-    Write-Host "🔓 Habilitando execução de scripts..." -ForegroundColor Yellow
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-}
+# 4. Dar permissão aos scripts
+echo "🔓 Configurando permissões..."
+chmod +x scripts/*.sh
 
-# 4. Executar registro
-Write-Host "`n🔐 Iniciando processo de registro/login..." -ForegroundColor Cyan
-& .\scripts\register-user.ps1
+# 5. Executar registro
+echo -e "\n🔐 Iniciando processo de registro/login..."
+./scripts/register-user.sh
 
-# 5. Executar setup
-Write-Host "`n🚀 Configurando ambiente AI-OS..." -ForegroundColor Cyan
-& .\scripts\setup-client.ps1
+# 6. Executar setup
+echo -e "\n🚀 Configurando ambiente AI-OS..."
+./scripts/setup-client.sh
 
-# 6. Testar conexão
-Write-Host "`n🧪 Testando conexão com MCPs..." -ForegroundColor Green
-Write-Host "Execute 'node test-mcps.js' para validar a configuração"
+# 7. Testar conexão
+echo -e "\n🧪 Testando conexão com MCPs..."
+echo "Execute 'node test-mcps.js' para validar a configuração"
 ```
 
 ## Para Mac/Linux (Bash)
@@ -71,16 +83,34 @@ echo -e "\n🧪 Testando conexão com MCPs..."
 echo "Execute 'node test-mcps.js' para validar a configuração"
 ```
 
-## Comando Único para Claude Code
+## Comando Único para Cascade no Windsurf
 
-### Windows:
+### Windows (usar terminal WSL):
 ```
-Por favor execute este script PowerShell para configurar o AI-OS:
-git clone https://github.com/allfluencee/ai-os-client.git . ; if ($?) { Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force ; .\scripts\register-user.ps1 ; .\scripts\setup-client.ps1 }
+Por favor, abra um terminal WSL no Windsurf e execute:
+cd /mnt/c/projetos/ai-os-client && git clone https://github.com/allfluencee/ai-os-client.git . && chmod +x scripts/*.sh && ./scripts/register-user.sh && ./scripts/setup-client.sh
 ```
 
 ### Mac/Linux:
 ```
 Por favor execute este comando bash para configurar o AI-OS:
 git clone https://github.com/allfluencee/ai-os-client.git . && chmod +x scripts/*.sh && ./scripts/register-user.sh && ./scripts/setup-client.sh
+```
+
+## Prompt Completo para o Cascade
+
+Cole isso no Cascade (Ctrl+L) para configuração automática:
+
+```
+Configure o AI-OS Client neste projeto Windows:
+
+1. Abra um terminal WSL (não PowerShell)
+2. Navegue para /mnt/c/projetos/ai-os-client
+3. Clone https://github.com/allfluencee/ai-os-client
+4. Execute chmod +x scripts/*.sh
+5. Execute ./scripts/register-user.sh
+6. Execute ./scripts/setup-client.sh
+7. Teste com node test-mcps.js
+
+Use APENAS o terminal WSL para todos os comandos.
 ```
