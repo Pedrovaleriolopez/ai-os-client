@@ -24,25 +24,57 @@ echo "📋 Sistema detectado: $OS"
 # Função para ler input
 read_input() {
     local prompt="$1"
-    local var_name="$2"
-    local default="$3"
+    local default="$2"
     
     if [ -n "$default" ]; then
         read -p "$prompt [$default]: " input
-        eval "$var_name=\"${input:-$default}\""
+        if [ -z "$input" ]; then
+            input="$default"
+        fi
     else
         read -p "$prompt: " input
-        eval "$var_name=\"$input\""
     fi
+    
+    echo "$input"
 }
 
-# Coletar informações do usuário
-echo ""
-echo "📝 Informações do usuário:"
-read_input "Seu email" USER_EMAIL ""
-read_input "Seu ID de usuário" USER_ID "${USER_EMAIL%%@*}"
-read_input "Servidor AI-OS" SERVER_IP "5.161.112.59"
-read_input "Tenant ID" TENANT_ID "default"
+# Verificar credenciais salvas
+credentialsFile=".ai-os-credentials.json"
+if [ -f "$credentialsFile" ]; then
+    echo "📋 Credenciais encontradas em $credentialsFile"
+    
+    # Parse JSON file
+    USER_EMAIL=$(grep -o '"USER_EMAIL":[[:space:]]*"[^"]*"' "$credentialsFile" | sed 's/.*"USER_EMAIL":[[:space:]]*"\([^"]*\)".*/\1/')
+    USER_ID=$(grep -o '"USER_ID":[[:space:]]*"[^"]*"' "$credentialsFile" | sed 's/.*"USER_ID":[[:space:]]*"\([^"]*\)".*/\1/')
+    TENANT_ID=$(grep -o '"TENANT_ID":[[:space:]]*"[^"]*"' "$credentialsFile" | sed 's/.*"TENANT_ID":[[:space:]]*"\([^"]*\)".*/\1/')
+    API_TOKEN=$(grep -o '"API_TOKEN":[[:space:]]*"[^"]*"' "$credentialsFile" | sed 's/.*"API_TOKEN":[[:space:]]*"\([^"]*\)".*/\1/')
+    
+    echo "USER_EMAIL: $USER_EMAIL"
+    echo "USER_ID: $USER_ID"
+    echo "TENANT_ID: $TENANT_ID"
+    echo ""
+    
+    use_credentials=$(read_input "Usar essas credenciais? (s/n)" "s")
+    if [ "$use_credentials" != "s" ]; then
+        # Coletar novas informações
+        echo "📝 Informações do usuário:"
+        USER_EMAIL=$(read_input "Seu email")
+        USER_ID=$(read_input "Seu ID de usuário" "${USER_EMAIL%%@*}")
+        TENANT_ID=$(read_input "Tenant ID" "default")
+    fi
+else
+    echo "⚠️ Nenhuma credencial salva encontrada."
+    echo "💡 Execute ./register-user.sh para se registrar primeiro."
+    echo ""
+    
+    # Coletar informações do usuário
+    echo "📝 Informações do usuário:"
+    USER_EMAIL=$(read_input "Seu email")
+    USER_ID=$(read_input "Seu ID de usuário" "${USER_EMAIL%%@*}")
+    TENANT_ID=$(read_input "Tenant ID" "default")
+fi
+
+SERVER_IP=$(read_input "Servidor AI-OS" "5.161.112.59")
 
 # Verificar SSH
 echo ""
