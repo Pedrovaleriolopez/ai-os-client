@@ -23,12 +23,43 @@ function Read-Input {
     }
 }
 
-# Coletar informações do usuário
-Write-Host "📝 Informações do usuário:" -ForegroundColor Yellow
-$USER_EMAIL = Read-Input -Prompt "Seu email"
-$USER_ID = Read-Input -Prompt "Seu ID de usuário" -Default ($USER_EMAIL -split '@')[0]
+# Verificar credenciais salvas
+$credentialsFile = ".ai-os-credentials.json"
+if (Test-Path $credentialsFile) {
+    Write-Host "📋 Credenciais encontradas em $credentialsFile" -ForegroundColor Green
+    $credentials = Get-Content $credentialsFile | ConvertFrom-Json
+    
+    $USER_EMAIL = $credentials.USER_EMAIL
+    $USER_ID = $credentials.USER_ID
+    $TENANT_ID = $credentials.TENANT_ID
+    $API_TOKEN = $credentials.API_TOKEN
+    
+    Write-Host "USER_EMAIL: $USER_EMAIL" -ForegroundColor Cyan
+    Write-Host "USER_ID: $USER_ID" -ForegroundColor Cyan
+    Write-Host "TENANT_ID: $TENANT_ID" -ForegroundColor Cyan
+    Write-Host ""
+    
+    $useCredentials = Read-Input -Prompt "Usar essas credenciais? (s/n)" -Default "s"
+    if ($useCredentials -ne "s") {
+        # Coletar novas informações
+        Write-Host "📝 Informações do usuário:" -ForegroundColor Yellow
+        $USER_EMAIL = Read-Input -Prompt "Seu email"
+        $USER_ID = Read-Input -Prompt "Seu ID de usuário" -Default ($USER_EMAIL -split '@')[0]
+        $TENANT_ID = Read-Input -Prompt "Tenant ID" -Default "default"
+    }
+} else {
+    Write-Host "⚠️ Nenhuma credencial salva encontrada." -ForegroundColor Yellow
+    Write-Host "💡 Execute ./register-user.ps1 para se registrar primeiro." -ForegroundColor Cyan
+    Write-Host ""
+    
+    # Coletar informações do usuário
+    Write-Host "📝 Informações do usuário:" -ForegroundColor Yellow
+    $USER_EMAIL = Read-Input -Prompt "Seu email"
+    $USER_ID = Read-Input -Prompt "Seu ID de usuário" -Default ($USER_EMAIL -split '@')[0]
+    $TENANT_ID = Read-Input -Prompt "Tenant ID" -Default "default"
+}
+
 $SERVER_IP = Read-Input -Prompt "Servidor AI-OS" -Default "5.161.112.59"
-$TENANT_ID = Read-Input -Prompt "Tenant ID" -Default "default"
 
 # Verificar SSH
 Write-Host ""
@@ -45,7 +76,7 @@ if (!(Test-Path "$env:USERPROFILE\.ssh")) {
 # Gerar chave SSH se não existir
 if (!(Test-Path $sshKeyPath)) {
     Write-Host "🔑 Gerando chave SSH..." -ForegroundColor Yellow
-    ssh-keygen -t rsa -b 4096 -C $USER_EMAIL -f $sshKeyPath -N '"""
+    ssh-keygen -t rsa -b 4096 -C $USER_EMAIL -f $sshKeyPath -N '""'
 }
 
 # Testar conexão SSH
