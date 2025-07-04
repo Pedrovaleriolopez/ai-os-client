@@ -9,8 +9,8 @@ Welcome to AI-OS! This repository contains everything you need to:
 
 ### Prerequisites
 - Claude Code or Windsurf installed
-- SSH access to AI-OS server
 - Git installed
+- Node.js 18+ (for agent development)
 
 ### Setup (5 minutes)
 
@@ -20,7 +20,20 @@ Welcome to AI-OS! This repository contains everything you need to:
    cd ai-os-client
    ```
 
-2. **Run setup script**
+2. **Register or login (first time only)**
+   
+   **Windows:**
+   ```powershell
+   ./scripts/register-user.ps1
+   ```
+   
+   **Mac/Linux:**
+   ```bash
+   chmod +x scripts/register-user.sh
+   ./scripts/register-user.sh
+   ```
+
+3. **Run setup script**
    
    **Windows:**
    ```powershell
@@ -33,7 +46,7 @@ Welcome to AI-OS! This repository contains everything you need to:
    ./scripts/setup-client.sh
    ```
 
-3. **Open in your IDE**
+4. **Open in your IDE**
    ```bash
    claude .    # For Claude Code
    windsurf .  # For Windsurf
