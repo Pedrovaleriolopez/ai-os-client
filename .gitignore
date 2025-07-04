@@ -7,6 +7,12 @@ node_modules/
 .env.local
 .env.*.local
 
+# Credentials and sensitive data
+.ai-os-credentials.json
+*.pem
+*.key
+*.cert
+
 # User-specific MCP configuration
 .mcp.json
 !templates/.mcp.json
