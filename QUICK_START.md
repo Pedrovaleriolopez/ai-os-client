@@ -2,7 +2,7 @@
 
 ## 🎯 Visão Geral do Fluxo
 ```
-Windsurf → Terminal WSL → Claude Code → AI-OS Client
+Windsurf → Terminal WSL → Claude Code → GitHub Auth → AI-OS Client
 ```
 
 ## 📥 Passo 1: Instalar Windsurf e WSL (3 min)
@@ -67,39 +67,52 @@ claude "Olá, você está funcionando?"
 # Deve responder algo como: "Sim, estou funcionando!"
 ```
 
-## 🔧 Passo 3: Configurar AI-OS Client (2 min)
+## 🔐 Passo 3: Configurar GitHub para Repositório Privado (2 min)
 
-### 3.1 Clone o repositório AI-OS
-Ainda no terminal WSL:
+### 3.1 Use o Claude Code para configurar o GitHub CLI
+```bash
+# Com o Claude Code funcionando, execute:
+claude "Por favor, faça o seguinte:
+1. Verifique se o GitHub CLI (gh) está instalado com 'gh --version'
+2. Se não estiver, instale com: sudo apt install gh -y
+3. Configure a autenticação do GitHub com: gh auth login
+4. Escolha GitHub.com, HTTPS, e autentique via browser
+5. Teste se funcionou com: gh auth status"
+```
 
+O Claude Code irá:
+- ✅ Verificar/instalar o GitHub CLI
+- ✅ Guiar você pelo processo de autenticação
+- ✅ Confirmar que a autenticação funcionou
+
+### 3.2 Clone o repositório privado AI-OS
 ```bash
 # Navegue para sua pasta de projetos
 cd /mnt/c/Users/$USER/Documents
 mkdir -p projetos && cd projetos
 
-# Clone o repositório
-git clone https://github.com/allfluencee/ai-os-client.git
-cd ai-os-client
+# Agora clone com autenticação configurada
+claude "Clone o repositório privado https://github.com/allfluencee/ai-os-client.git usando git clone"
 ```
 
-### 3.2 Use o Claude Code para configurar tudo!
+## 🔧 Passo 4: Configurar AI-OS Client (2 min)
+
+### 4.1 Entre no diretório e configure
 ```bash
-# No diretório ai-os-client, execute:
+cd ai-os-client
+
+# Use o Claude Code para configurar tudo!
 claude "Por favor, execute os scripts de setup do AI-OS:
-1. Execute ./scripts/register-user.sh para criar minha conta
-2. Execute ./scripts/setup-client.sh para configurar os MCPs
-3. Teste a conexão com node test-mcps.js
+1. Torne os scripts executáveis: chmod +x scripts/*.sh
+2. Execute ./scripts/register-user.sh para criar minha conta
+3. Execute ./scripts/setup-client.sh para configurar os MCPs
+4. Teste a conexão com node test-mcps.js
 Use bash para executar os comandos."
 ```
 
-O Claude Code irá:
-- ✅ Tornar scripts executáveis se necessário
-- ✅ Executar o registro/login
-- ✅ Configurar todos os MCPs
-- ✅ Testar as conexões
-
 ## 🎉 Pronto! Agora você tem:
 - ✨ **Claude Code** rodando no terminal WSL
+- 🔐 **GitHub CLI** configurado com acesso aos repos privados
 - 🔌 **AI-OS Client** configurado e conectado
 - 🚀 **Windsurf** como seu IDE principal
 
@@ -127,16 +140,39 @@ claude "explique o código no arquivo app.ts"
 claude -f arquivo.ts "adicione tratamento de erros"
 ```
 
-### Integração com AI-OS
+### Comandos GitHub CLI
 ```bash
-# Desenvolver agentes AI
-claude "crie um agente AI-OS que monitora logs"
+# Ver status da autenticação
+gh auth status
 
-# Testar MCPs
-claude "teste a conexão com o memory-mcp"
+# Clonar outros repos privados
+gh repo clone owner/repo
+
+# Criar issues
+gh issue create
+
+# Criar PRs
+gh pr create
 ```
 
 ## 🆘 Resolução de Problemas
+
+### "Permission denied ao clonar repositório"
+```bash
+# Verifique a autenticação
+gh auth status
+
+# Refaça o login se necessário
+gh auth logout
+gh auth login
+```
+
+### "gh: command not found"
+```bash
+# Instale o GitHub CLI
+sudo apt update
+sudo apt install gh -y
+```
 
 ### "claude: command not found"
 ```bash
@@ -145,7 +181,6 @@ sudo npm install -g @anthropic-ai/claude-code
 
 # Verifique o PATH
 echo $PATH
-# Deve incluir /usr/bin ou onde npm instala globais
 ```
 
 ### "API key não configurada"
@@ -161,11 +196,6 @@ export ANTHROPIC_API_KEY="sua-key-aqui"
 1. Verifique se WSL está instalado: `wsl --list` (PowerShell)
 2. Reinicie o Windsurf
 3. Tente: Terminal → New Terminal → WSL
-
-### "Permissão negada nos scripts"
-```bash
-chmod +x scripts/*.sh
-```
 
 ## 📚 Próximos Passos
 
@@ -186,6 +216,14 @@ chmod +x scripts/*.sh
 
 ## 🎓 Dicas Pro
 
+### Autenticação GitHub permanente
+```bash
+# Configure cache de credenciais
+gh auth setup-git
+
+# Isso evita ter que autenticar sempre
+```
+
 ### Workspace do Claude Code
 ```bash
 # Claude Code entende o contexto do diretório atual
@@ -198,10 +236,13 @@ claude "analise a estrutura deste projeto"
 - Uma para Claude Code interativo
 - Outra para comandos gerais
 
-### Histórico de comandos
+### Trabalhar com repos privados
 ```bash
-# Claude Code mantém contexto da sessão
-claude "continue o código anterior"
+# Liste seus repos
+gh repo list
+
+# Clone qualquer repo privado
+gh repo clone seu-usuario/seu-repo-privado
 ```
 
 ## 🤝 Suporte
@@ -212,4 +253,4 @@ claude "continue o código anterior"
 
 ---
 
-**Dica Final**: Depois de configurado, você pode usar o Claude Code para qualquer tarefa de desenvolvimento diretamente no terminal WSL! 🚀
+**Dica Final**: Com o GitHub CLI configurado, você pode trabalhar com qualquer repositório privado diretamente do terminal WSL usando o Claude Code! 🚀
