@@ -1,0 +1,52 @@
+{
+  "mcpServers": {
+    "ai-os-orchestrator": {
+      "command": "ssh",
+      "args": [
+        "root@${SERVER_IP}",
+        "docker exec -i ai-os-orchestrator node /app/dist/mcp-server.js"
+      ],
+      "env": {
+        "USER_ID": "${YOUR_USER_ID}",
+        "USER_EMAIL": "${YOUR_EMAIL}",
+        "TENANT_ID": "${TENANT_ID}"
+      }
+    },
+    "global-memory-hub": {
+      "command": "ssh",
+      "args": [
+        "root@${SERVER_IP}",
+        "docker exec -i global-memory-hub node /app/dist/mcp-server.js"
+      ],
+      "env": {
+        "USER_ID": "${YOUR_USER_ID}",
+        "USER_EMAIL": "${YOUR_EMAIL}",
+        "TENANT_ID": "${TENANT_ID}"
+      }
+    },
+    "context-manager": {
+      "command": "ssh",
+      "args": [
+        "root@${SERVER_IP}",
+        "docker exec -i context-manager node /app/dist/mcp-server.js"
+      ],
+      "env": {
+        "USER_ID": "${YOUR_USER_ID}",
+        "USER_EMAIL": "${YOUR_EMAIL}",
+        "TENANT_ID": "${TENANT_ID}"
+      }
+    },
+    "document-graph": {
+      "command": "ssh",
+      "args": [
+        "root@${SERVER_IP}",
+        "docker exec -i document-graph-mcp node /app/dist/index.js"
+      ],
+      "env": {
+        "USER_ID": "${YOUR_USER_ID}",
+        "USER_EMAIL": "${YOUR_EMAIL}",
+        "TENANT_ID": "${TENANT_ID}"
+      }
+    }
+  }
+}
