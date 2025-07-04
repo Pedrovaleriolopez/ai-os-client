@@ -1,8 +1,8 @@
-# 🚀 AI-OS Quick Start - Configure Claude Code + AI-OS em 10 Minutos!
+# 🚀 AI-OS Quick Start - Configure Claude Code + AI-OS em 15 Minutos!
 
 ## 🎯 Visão Geral do Fluxo
 ```
-Windsurf → Terminal WSL → Claude Code → GitHub Auth → AI-OS Client
+Windsurf → Terminal WSL → Claude Code → MCPs Essenciais → GitHub Auth → AI-OS Client
 ```
 
 ## 📥 Passo 1: Instalar Windsurf e WSL (3 min)
@@ -67,182 +67,199 @@ claude "Olá, você está funcionando?"
 # Deve responder algo como: "Sim, estou funcionando!"
 ```
 
-## 🔐 Passo 3: Configurar GitHub para Repositório Privado (2 min)
+## 🔧 Passo 3: Configurar MCPs Essenciais (5 min)
 
-### 3.1 Use o Claude Code para configurar o GitHub CLI
+### 3.1 Crie o arquivo de configuração MCP
 ```bash
-# Com o Claude Code funcionando, execute:
+# Use o Claude Code para criar a configuração
 claude "Por favor, faça o seguinte:
-1. Verifique se o GitHub CLI (gh) está instalado com 'gh --version'
-2. Se não estiver, instale com: sudo apt install gh -y
-3. Configure a autenticação do GitHub com: gh auth login
-4. Escolha GitHub.com, HTTPS, e autentique via browser
-5. Teste se funcionou com: gh auth status"
+1. Crie o diretório: mkdir -p ~/.config/claude-desktop
+2. Crie o arquivo: nano ~/.config/claude-desktop/.mcp.json
+3. Aguarde eu fornecer o conteúdo"
 ```
 
-O Claude Code irá:
-- ✅ Verificar/instalar o GitHub CLI
-- ✅ Guiar você pelo processo de autenticação
-- ✅ Confirmar que a autenticação funcionou
+### 3.2 Configure os MCPs essenciais
+Cole esta configuração no arquivo `.mcp.json`:
 
-### 3.2 Clone o repositório privado AI-OS
+```json
+{
+  "mcpServers": {
+    "desktop-commander": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@wonderwhy-er/desktop-commander"
+      ]
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "SEU_GITHUB_TOKEN_AQUI"
+      }
+    }
+  }
+}
+```
+
+**Importante**: Você precisa de um GitHub Personal Access Token:
+1. Acesse: https://github.com/settings/tokens/new
+2. Nome: "AI-OS MCP Access"
+3. Expiração: 90 dias (ou mais)
+4. Permissões necessárias:
+   - ✅ repo (acesso completo a repositórios privados)
+   - ✅ workflow
+   - ✅ write:packages
+   - ✅ read:org
+5. Clique em "Generate token"
+6. Copie o token e substitua `SEU_GITHUB_TOKEN_AQUI` no arquivo
+
+Salve com `Ctrl+X`, `Y`, `Enter`.
+
+### 3.3 Reinicie o Claude Code para carregar os MCPs
+```bash
+# Feche o Claude Code se estiver em modo interativo (Ctrl+C)
+# Teste se os MCPs foram carregados
+claude "Liste os MCPs disponíveis usando o comando apropriado"
+```
+
+### 3.4 Configure o Windsurf/Cascade (se usar)
+Para o Windsurf Cascade, adicione os mesmos MCPs:
+1. No Windsurf: `Ctrl+Shift+P` → "Preferences: Open User Settings (JSON)"
+2. Adicione a seção `mcpServers` com a mesma configuração acima
+
+## 🔐 Passo 4: Clone o Repositório Privado com MCP GitHub (2 min)
+
+### 4.1 Use o MCP GitHub para clonar
 ```bash
 # Navegue para sua pasta de projetos
 cd /mnt/c/Users/$USER/Documents
 mkdir -p projetos && cd projetos
 
-# Agora clone com autenticação configurada
-claude "Clone o repositório privado https://github.com/allfluencee/ai-os-client.git usando git clone"
+# Use o Claude Code com MCP GitHub
+claude "Use o MCP GitHub para:
+1. Verificar meu acesso aos repositórios com list_repositories
+2. Clonar o repositório allfluencee/ai-os-client
+3. Use o desktop-commander para navegar até a pasta clonada"
 ```
 
-## 🔧 Passo 4: Configurar AI-OS Client (2 min)
+O Claude Code com MCPs irá:
+- ✅ Usar o MCP GitHub para autenticação automática
+- ✅ Clonar o repositório privado sem pedir senha
+- ✅ Usar desktop-commander para operações de arquivo
 
-### 4.1 Entre no diretório e configure
+## 🚀 Passo 5: Configurar AI-OS Client (2 min)
+
+### 5.1 Entre no diretório e configure
 ```bash
 cd ai-os-client
 
-# Use o Claude Code para configurar tudo!
-claude "Por favor, execute os scripts de setup do AI-OS:
-1. Torne os scripts executáveis: chmod +x scripts/*.sh
-2. Execute ./scripts/register-user.sh para criar minha conta
-3. Execute ./scripts/setup-client.sh para configurar os MCPs
-4. Teste a conexão com node test-mcps.js
-Use bash para executar os comandos."
+# Use o Claude Code com desktop-commander
+claude "Use o desktop-commander MCP para:
+1. Listar os arquivos em scripts/
+2. Tornar executáveis: chmod +x scripts/*.sh
+3. Execute ./scripts/register-user.sh
+4. Execute ./scripts/setup-client.sh
+5. Teste com: node test-mcps.js"
 ```
 
 ## 🎉 Pronto! Agora você tem:
 - ✨ **Claude Code** rodando no terminal WSL
-- 🔐 **GitHub CLI** configurado com acesso aos repos privados
+- 🛠️ **MCPs Essenciais** configurados (desktop-commander + github)
+- 🔐 **Acesso automatizado** a repositórios privados
 - 🔌 **AI-OS Client** configurado e conectado
 - 🚀 **Windsurf** como seu IDE principal
 
-## 💡 Como Usar
+## 💡 Vantagens dos MCPs Configurados
 
-### Desenvolvimento com Claude Code no WSL
+### Desktop Commander MCP
 ```bash
-# Sempre no terminal WSL do Windsurf
-cd /mnt/c/Users/$USER/Documents/projetos/seu-projeto
-claude "crie um servidor Express básico com TypeScript"
+# Operações de arquivo avançadas
+claude "Use desktop-commander para criar a estrutura de pastas do meu projeto"
+
+# Edição de múltiplos arquivos
+claude "Use desktop-commander para atualizar todos os arquivos .env"
 ```
 
-### Comandos Úteis do Claude Code
+### GitHub MCP
 ```bash
-# Ajuda
-claude --help
-
-# Modo interativo
-claude
-
-# Executar comando direto
-claude "explique o código no arquivo app.ts"
-
-# Com contexto de arquivo
-claude -f arquivo.ts "adicione tratamento de erros"
-```
-
-### Comandos GitHub CLI
-```bash
-# Ver status da autenticação
-gh auth status
-
-# Clonar outros repos privados
-gh repo clone owner/repo
+# Gerenciar repositórios
+claude "Use o GitHub MCP para listar meus repositórios"
 
 # Criar issues
-gh issue create
+claude "Use o GitHub MCP para criar uma issue sobre bug X"
 
-# Criar PRs
-gh pr create
+# Gerenciar PRs
+claude "Use o GitHub MCP para listar PRs abertos"
 ```
 
 ## 🆘 Resolução de Problemas
 
-### "Permission denied ao clonar repositório"
+### "MCP não carregado"
 ```bash
-# Verifique a autenticação
-gh auth status
+# Verifique o arquivo de configuração
+cat ~/.config/claude-desktop/.mcp.json
 
-# Refaça o login se necessário
-gh auth logout
-gh auth login
+# Reinicie o Claude Code
+# Feche com Ctrl+C e abra novamente
 ```
 
-### "gh: command not found"
+### "GitHub token inválido"
+1. Gere novo token em: https://github.com/settings/tokens/new
+2. Atualize no arquivo `.mcp.json`
+3. Reinicie o Claude Code
+
+### "Permission denied ao clonar"
 ```bash
-# Instale o GitHub CLI
-sudo apt update
-sudo apt install gh -y
+# Verifique se o MCP GitHub está funcionando
+claude "Use o GitHub MCP para executar search_repositories com query 'ai-os'"
 ```
 
-### "claude: command not found"
+### "desktop-commander não funciona"
 ```bash
-# Reinstale globalmente
-sudo npm install -g @anthropic-ai/claude-code
-
-# Verifique o PATH
-echo $PATH
+# Teste o MCP
+claude "Use o desktop-commander para executar list_directory no diretório atual"
 ```
-
-### "API key não configurada"
-```bash
-# Verifique o arquivo de config
-cat ~/.config/claude/config.json
-
-# Ou defina via variável de ambiente
-export ANTHROPIC_API_KEY="sua-key-aqui"
-```
-
-### "WSL não abre no Windsurf"
-1. Verifique se WSL está instalado: `wsl --list` (PowerShell)
-2. Reinicie o Windsurf
-3. Tente: Terminal → New Terminal → WSL
 
 ## 📚 Próximos Passos
 
-1. **Explore os exemplos**: 
+1. **Configure MCPs adicionais do AI-OS**: 
    ```bash
-   claude "mostre os exemplos em docs/examples/"
+   cd ai-os-client
+   claude "Mostre como adicionar os MCPs do arquivo docs/mcp-config-example.json"
    ```
 
-2. **Crie seu primeiro agente**:
+2. **Explore capacidades dos MCPs**:
    ```bash
-   claude "crie um agente AI seguindo o guia em docs/AGENT_DEVELOPMENT_GUIDE.md"
+   claude "Liste todas as ferramentas disponíveis nos MCPs configurados"
    ```
 
-3. **Automatize tarefas**:
+3. **Automatize com MCPs**:
    ```bash
-   claude "crie um script que automatiza o deploy de agentes"
+   claude "Crie um script usando desktop-commander e github MCPs para automatizar deploy"
    ```
 
 ## 🎓 Dicas Pro
 
-### Autenticação GitHub permanente
-```bash
-# Configure cache de credenciais
-gh auth setup-git
+### MCPs no Windsurf e Claude Desktop
+- A mesma configuração `.mcp.json` funciona em:
+  - Claude Code (terminal)
+  - Claude Desktop (app)
+  - Windsurf Cascade
 
-# Isso evita ter que autenticar sempre
+### Organização de Tokens
+```bash
+# Crie um arquivo seguro para tokens
+claude "Use desktop-commander para criar ~/.secrets/tokens.env com permissões 600"
 ```
 
-### Workspace do Claude Code
+### Debug de MCPs
 ```bash
-# Claude Code entende o contexto do diretório atual
-cd seu-projeto
-claude "analise a estrutura deste projeto"
-```
-
-### Múltiplas janelas WSL
-- Abra várias abas de terminal WSL no Windsurf
-- Uma para Claude Code interativo
-- Outra para comandos gerais
-
-### Trabalhar com repos privados
-```bash
-# Liste seus repos
-gh repo list
-
-# Clone qualquer repo privado
-gh repo clone seu-usuario/seu-repo-privado
+# Veja logs de MCPs
+claude --mcp-debug "teste conexão com GitHub MCP"
 ```
 
 ## 🤝 Suporte
@@ -253,4 +270,4 @@ gh repo clone seu-usuario/seu-repo-privado
 
 ---
 
-**Dica Final**: Com o GitHub CLI configurado, você pode trabalhar com qualquer repositório privado diretamente do terminal WSL usando o Claude Code! 🚀
+**Dica Final**: Com os MCPs configurados, o Claude Code se torna uma ferramenta muito mais poderosa para automação e desenvolvimento! 🚀
