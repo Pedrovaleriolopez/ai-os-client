@@ -1,166 +1,215 @@
-# 🚀 AI-OS Quick Start - Configure em 5 Minutos!
+# 🚀 AI-OS Quick Start - Configure Claude Code + AI-OS em 10 Minutos!
 
-## 📥 Passo 1: Instalar as Ferramentas (3 min)
+## 🎯 Visão Geral do Fluxo
+```
+Windsurf → Terminal WSL → Claude Code → AI-OS Client
+```
+
+## 📥 Passo 1: Instalar Windsurf e WSL (3 min)
 
 ### 1.1 Baixe e instale o Windsurf
 - **Download**: [https://www.codeium.com/windsurf/download](https://www.codeium.com/windsurf/download)
-- Escolha sua versão: Windows, Mac ou Linux
-- Execute o instalador e siga as instruções
-- Durante a instalação, marque a opção "Add to PATH"
+- Execute o instalador (Windows/Mac/Linux)
+- Marque "Add to PATH" durante instalação
 
 ### 1.2 Configure o WSL (Windows apenas)
-Se você usa Windows, precisa do WSL para o Claude Code funcionar:
-
 **PowerShell como Admin:**
 ```powershell
 wsl --install
 ```
-- Reinicie o computador quando solicitado
-- Após reiniciar, defina usuário e senha para o Ubuntu
+- Reinicie quando solicitado
+- Após reiniciar, defina usuário e senha Ubuntu
 
-## ⚙️ Passo 2: Configurar Windsurf + Cascade (2 min)
+## 🤖 Passo 2: Instalar Claude Code no WSL (5 min)
 
-### 2.1 Abra o Windsurf
+### 2.1 Abra o Windsurf e o Terminal WSL
+1. Abra o Windsurf
+2. Abra o terminal integrado: `Ctrl+` ` (backtick)
+3. Clique no dropdown `+` → Selecione "WSL" ou "Ubuntu"
+4. Você verá algo como: `user@machine:/mnt/c/Users/...`
 
-### 2.2 Configure o Cascade (AI integrado do Windsurf)
-1. Pressione `Ctrl+Shift+P` (Windows) ou `Cmd+Shift+P` (Mac)
-2. Digite: `Windsurf: Sign in`
-3. Faça login com sua conta do Windsurf/Codeium
+### 2.2 Instale o Claude Code no WSL
+No terminal WSL, execute:
 
-### 2.3 Ative o Cascade
-1. Clique no ícone do Cascade na barra lateral direita
-2. Ou pressione `Ctrl+L` (Windows) ou `Cmd+L` (Mac)
-3. O Cascade é o assistente AI do Windsurf (similar ao Claude Code)
-
-## 🎯 Passo 3: Setup Automático com Cascade
-
-### 3.1 Crie uma nova pasta para o projeto
 ```bash
-# Windows (PowerShell)
-mkdir C:\projetos\ai-os-client
-cd C:\projetos\ai-os-client
+# Instalar Node.js 20+ (necessário para Claude Code)
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
 
-# Mac/Linux
-mkdir ~/projetos/ai-os-client
-cd ~/projetos/ai-os-client
+# Instalar Claude Code globalmente
+sudo npm install -g @anthropic-ai/claude-code
+
+# Verificar instalação
+claude --version
 ```
 
-### 3.2 Abra no Windsurf
+### 2.3 Configure sua API Key
 ```bash
-windsurf .
+# Criar arquivo de configuração
+mkdir -p ~/.config/claude
+nano ~/.config/claude/config.json
 ```
 
-### 3.3 Use o Cascade para configurar tudo!
-
-No Cascade (Ctrl+L ou Cmd+L), cole este comando:
-
-```
-Por favor, configure o AI-OS Client para mim no Windows com WSL:
-
-1. Abra um terminal WSL integrado no Windsurf
-2. Clone o repositório: https://github.com/allfluencee/ai-os-client
-3. Execute o script de registro para criar minha conta
-4. Execute o script de setup para configurar os MCPs
-5. Configure o Git se necessário
-6. Teste a conexão com os MCPs
-
-Use o terminal WSL para todos os comandos. O repositório está no diretório atual.
+Cole esta configuração:
+```json
+{
+  "apiKey": "SUA_ANTHROPIC_API_KEY_AQUI"
+}
 ```
 
-## 🎉 Pronto!
+Salve com `Ctrl+X`, depois `Y`, depois `Enter`.
 
-O Cascade irá:
-- ✅ Abrir terminal WSL no Windsurf
-- ✅ Clonar o repositório
+### 2.4 Teste o Claude Code
+```bash
+# Teste rápido
+claude "Olá, você está funcionando?"
+
+# Deve responder algo como: "Sim, estou funcionando!"
+```
+
+## 🔧 Passo 3: Configurar AI-OS Client (2 min)
+
+### 3.1 Clone o repositório AI-OS
+Ainda no terminal WSL:
+
+```bash
+# Navegue para sua pasta de projetos
+cd /mnt/c/Users/$USER/Documents
+mkdir -p projetos && cd projetos
+
+# Clone o repositório
+git clone https://github.com/allfluencee/ai-os-client.git
+cd ai-os-client
+```
+
+### 3.2 Use o Claude Code para configurar tudo!
+```bash
+# No diretório ai-os-client, execute:
+claude "Por favor, execute os scripts de setup do AI-OS:
+1. Execute ./scripts/register-user.sh para criar minha conta
+2. Execute ./scripts/setup-client.sh para configurar os MCPs
+3. Teste a conexão com node test-mcps.js
+Use bash para executar os comandos."
+```
+
+O Claude Code irá:
+- ✅ Tornar scripts executáveis se necessário
 - ✅ Executar o registro/login
-- ✅ Configurar todos os MCPs automaticamente
-- ✅ Criar todos os arquivos de configuração
+- ✅ Configurar todos os MCPs
 - ✅ Testar as conexões
 
-## 💡 Dicas Importantes para Windows
+## 🎉 Pronto! Agora você tem:
+- ✨ **Claude Code** rodando no terminal WSL
+- 🔌 **AI-OS Client** configurado e conectado
+- 🚀 **Windsurf** como seu IDE principal
 
-### Terminal WSL no Windsurf
-1. Abra o terminal integrado: `Ctrl+` ` (backtick)
-2. Clique no dropdown ao lado do `+` no terminal
-3. Selecione "WSL" ou "Ubuntu"
-4. Agora você está no ambiente Linux!
+## 💡 Como Usar
 
-### Comandos Rápidos no WSL
+### Desenvolvimento com Claude Code no WSL
 ```bash
-# Navegar para o projeto (a partir do WSL)
-cd /mnt/c/projetos/ai-os-client
+# Sempre no terminal WSL do Windsurf
+cd /mnt/c/Users/$USER/Documents/projetos/seu-projeto
+claude "crie um servidor Express básico com TypeScript"
+```
 
-# Clonar e configurar tudo
-git clone https://github.com/allfluencee/ai-os-client.git .
+### Comandos Úteis do Claude Code
+```bash
+# Ajuda
+claude --help
+
+# Modo interativo
+claude
+
+# Executar comando direto
+claude "explique o código no arquivo app.ts"
+
+# Com contexto de arquivo
+claude -f arquivo.ts "adicione tratamento de erros"
+```
+
+### Integração com AI-OS
+```bash
+# Desenvolver agentes AI
+claude "crie um agente AI-OS que monitora logs"
+
+# Testar MCPs
+claude "teste a conexão com o memory-mcp"
+```
+
+## 🆘 Resolução de Problemas
+
+### "claude: command not found"
+```bash
+# Reinstale globalmente
+sudo npm install -g @anthropic-ai/claude-code
+
+# Verifique o PATH
+echo $PATH
+# Deve incluir /usr/bin ou onde npm instala globais
+```
+
+### "API key não configurada"
+```bash
+# Verifique o arquivo de config
+cat ~/.config/claude/config.json
+
+# Ou defina via variável de ambiente
+export ANTHROPIC_API_KEY="sua-key-aqui"
+```
+
+### "WSL não abre no Windsurf"
+1. Verifique se WSL está instalado: `wsl --list` (PowerShell)
+2. Reinicie o Windsurf
+3. Tente: Terminal → New Terminal → WSL
+
+### "Permissão negada nos scripts"
+```bash
 chmod +x scripts/*.sh
-./scripts/register-user.sh
-./scripts/setup-client.sh
 ```
-
-### Integração Windows ↔ WSL
-- Seus arquivos Windows estão em: `/mnt/c/`
-- Exemplo: `C:\projetos` → `/mnt/c/projetos`
-- O Windsurf vê ambos os sistemas de arquivos!
-
-## 🆘 Problemas Comuns
-
-### "WSL não está instalado"
-Execute no PowerShell como Admin:
-```powershell
-wsl --install
-# Reinicie o computador após a instalação
-```
-
-### "Git não encontrado no WSL"
-No terminal WSL:
-```bash
-sudo apt update
-sudo apt install git -y
-```
-
-### "Permissão negada ao executar scripts"
-No terminal WSL:
-```bash
-chmod +x scripts/*.sh
-```
-
-### "SSH key não configurada"
-O Cascade pode ajudar! No Cascade, digite:
-```
-Por favor, gere uma chave SSH no WSL e mostre como adicionar ao servidor AI-OS
-```
-
-### "Terminal WSL não aparece no Windsurf"
-1. Certifique-se que o WSL está instalado e funcionando
-2. Teste no PowerShell: `wsl --list`
-3. Reinicie o Windsurf
-4. O terminal WSL deve aparecer nas opções de terminal
 
 ## 📚 Próximos Passos
 
-Após o setup, você pode:
-- Desenvolver agentes AI (veja `docs/AGENT_DEVELOPMENT_GUIDE.md`)
-- Testar os MCPs com `node test-mcps.js`
-- Explorar exemplos em `docs/examples/`
+1. **Explore os exemplos**: 
+   ```bash
+   claude "mostre os exemplos em docs/examples/"
+   ```
 
-## 🎓 Aprenda Mais
+2. **Crie seu primeiro agente**:
+   ```bash
+   claude "crie um agente AI seguindo o guia em docs/AGENT_DEVELOPMENT_GUIDE.md"
+   ```
 
-- **Tutorial em Vídeo**: [Em breve]
+3. **Automatize tarefas**:
+   ```bash
+   claude "crie um script que automatiza o deploy de agentes"
+   ```
+
+## 🎓 Dicas Pro
+
+### Workspace do Claude Code
+```bash
+# Claude Code entende o contexto do diretório atual
+cd seu-projeto
+claude "analise a estrutura deste projeto"
+```
+
+### Múltiplas janelas WSL
+- Abra várias abas de terminal WSL no Windsurf
+- Uma para Claude Code interativo
+- Outra para comandos gerais
+
+### Histórico de comandos
+```bash
+# Claude Code mantém contexto da sessão
+claude "continue o código anterior"
+```
+
+## 🤝 Suporte
+
 - **Discord**: [AI-OS Community](https://discord.gg/ai-os)
-- **Documentação Completa**: `docs/CLIENT_SETUP_GUIDE.md`
-
-## 🤖 Sobre Windsurf e Cascade
-
-**Windsurf** é um IDE baseado no VS Code com AI integrada, desenvolvido pela Codeium.
-
-**Cascade** é o assistente AI do Windsurf que:
-- Entende seu código completo
-- Pode editar múltiplos arquivos
-- Executa comandos no terminal
-- Similar ao Claude Code, mas integrado no IDE
-
-**Diferença principal**: Cascade roda dentro do Windsurf, enquanto o Claude Code original roda no terminal.
+- **Issues**: [GitHub](https://github.com/allfluencee/ai-os-client/issues)
+- **Email**: support@allfluence.ai
 
 ---
 
-**Dúvidas?** No Cascade, apenas pergunte: "Como faço para...?"
+**Dica Final**: Depois de configurado, você pode usar o Claude Code para qualquer tarefa de desenvolvimento diretamente no terminal WSL! 🚀
